@@ -5,7 +5,7 @@ mkdir build
 
 echo "Creating Build..."
 # The wrapped Ruby app
-cp -R hello-1.0.0-linux-x86_64 build
+cp -R packaging/hello-1.0.0-linux-x86_64 build
 # The Node wrapper
 cp index.js build
 # zip every file in /build, not /build itself
