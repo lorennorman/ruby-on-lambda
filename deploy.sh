@@ -1,4 +1,42 @@
 #!/bin/sh
+
+set -e
+
+TRAVELING_RUBY_VERSION=20150210-2.1.5
+
+########################
+### Helper Functions ###
+########################
+
+traveling_ruby_filename()
+{
+  target_os=$1
+  echo "traveling-ruby-$TRAVELING_RUBY_VERSION-$target_os.tar.gz"
+}
+
+download_runtime()
+{
+  target_os=$1 # first arg
+  filename=$( traveling_ruby_filename $target_os )
+
+  pushd packaging
+    echo "Checking for file: $filename..."
+    if [ -f $filename ] ; then
+      echo "...got it!"
+    else
+      echo "...doesn't exist, downloading."
+      traveling_ruby_url="http://d6r77u77i8pq3.cloudfront.net/releases/$filename"
+      curl -L -O --fail $traveling_ruby_url
+    fi
+  popd
+}
+
+download_runtime "osx"
+
+#####################
+### Deploy Script ###
+#####################
+
 echo "Cleaning..."
 rm -rf build
 mkdir build
