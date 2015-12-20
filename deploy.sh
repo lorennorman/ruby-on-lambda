@@ -92,6 +92,7 @@ mkdir -p $lib_dir
 cp -R app $lib_dir
 
 # Uncompress the appropriate Ruby into it
+download_runtime $target_os
 traveling_ruby_path=$( traveling_ruby_filename $target_os )
 mkdir "$package_dir/lib/ruby"
 tar -xzf "packaging/$traveling_ruby_path" -C "$package_dir/lib/ruby"
