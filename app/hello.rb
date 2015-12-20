@@ -1,2 +1,3 @@
 #!/usr/bin/env ruby
-puts "Wake up, you wild world!"
+puts "To: Lambda,"
+puts "From: Ruby!"
