@@ -1,8 +1,8 @@
 var spawn = require('child_process').spawn;
 
-var rubyAppRoot    = "hello-1.0.0-linux-x86_64"
-  , rubyExectuable = rubyAppRoot + "/lib/ruby/bin/ruby"
-  , rubyApp        = rubyAppRoot + "/lib/app/hello.rb";
+var rubyAppRoot    = "lib"
+  , rubyExectuable = rubyAppRoot + "/ruby/bin/ruby"
+  , rubyApp        = rubyAppRoot + "/app/hello.rb";
 
 exports.handler = function(event, context) {
   var child = spawn(rubyExectuable, [ rubyApp ]);

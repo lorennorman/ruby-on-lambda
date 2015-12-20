@@ -2,9 +2,14 @@
 
 set -e
 
-APP_NAME=hello-world
-APP_VERSION=1.0.0
-TRAVELING_RUBY_VERSION=20150210-2.1.5
+APP_NAME="hello-world"
+APP_VERSION="1.0.0"
+TRAVELING_RUBY_VERSION="20150210-2.1.5"
+
+AWS_PROFILE="paperize-lambda"
+AWS_BUCKET="assets.paperize.io"
+AWS_KEY="lambda/lambda-pdf-renderer.zip"
+AWS_LAMBDA_FUNCTION="testTravelingRuby"
 
 ########################
 ### Helper Functions ###
@@ -80,14 +85,13 @@ mkdir build
 
 # Create package dir skeleton
 package_dir="build/$APP_NAME-$APP_VERSION-$target_os"
-mkdir $package_dir
 lib_dir="$package_dir/lib"
 mkdir -p $lib_dir
 
 # Copy in the app
 cp -R app $lib_dir
 
-# Uncompress Ruby into it
+# Uncompress the appropriate Ruby into it
 traveling_ruby_path=$( traveling_ruby_filename $target_os )
 mkdir "$package_dir/lib/ruby"
 tar -xzf "packaging/$traveling_ruby_path" -C "$package_dir/lib/ruby"
@@ -96,19 +100,20 @@ tar -xzf "packaging/$traveling_ruby_path" -C "$package_dir/lib/ruby"
 # TODO
 
 # Add Lambda wrapper and zip
-# cp index.js build
-# pushd build
-# find . | zip lambda-pdf-renderer -@
-# popd
+cp index.js $package_dir
+pushd $package_dir
+  find . | zip "../$APP_NAME-$APP_VERSION-$target_os.zip" -@
+  package_zip="$package_dir.zip"
+popd
 
 # Clean up files
-# TODO
+rm -rf $package_dir
 
 
-# banner "Copying to S3"
-# aws s3api put-object --bucket assets.paperize.io --key lambda/lambda-pdf-renderer.zip --body build/lambda-pdf-renderer.zip --profile paperize-lambda
+banner "Copying to S3"
+aws s3api put-object --bucket $AWS_BUCKET --key $AWS_KEY --body $package_zip --profile $AWS_PROFILE
 
-# banner "Updating Lambda"
-# aws lambda update-function-code --function-name testTravelingRuby --s3-bucket assets.paperize.io --s3-key lambda/lambda-pdf-renderer.zip --profile paperize-lambda
+banner "Updating Lambda"
+aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION --s3-bucket $AWS_BUCKET --s3-key $AWS_KEY --profile $AWS_PROFILE
 
-# banner "Done!"
+banner "Done!"
