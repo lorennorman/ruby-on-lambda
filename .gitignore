@@ -1,3 +1,4 @@
 build/*
-packaging/*
+packaging/vendor/*
+packaging/*.tar.gz
 

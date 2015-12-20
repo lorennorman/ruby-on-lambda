@@ -98,9 +98,22 @@ mkdir "$package_dir/lib/ruby"
 tar -xzf "packaging/$traveling_ruby_path" -C "$package_dir/lib/ruby"
 
 # Copy in Bundler and gems
-# TODO
+banner "Bundling"
+mkdir -p packaging/tmp
+cp app/Gemfile* packaging/tmp/
+pushd packaging/tmp
+  BUNDLE_IGNORE_CONFIG=1 bundle install --path ../vendor --without development
+popd
+rm -rf packaging/tmp
+rm -f packaging/vendor/*/*/cache/*
+cp -pR packaging/vendor $lib_dir
+cp app/Gemfile* $lib_dir/vendor/
 
-# Add Lambda wrapper and zip
+mkdir $lib_dir/vendor/.bundle
+cp packaging/bundler-config $lib_dir/vendor/.bundle/config
+cp packaging/wrapper.sh $package_dir/app
+
+# Add Lambda wrapper and zip it all up for deploy
 cp index.js $package_dir
 pushd $package_dir
   find . | zip "../$APP_NAME-$APP_VERSION-$target_os.zip" -@
