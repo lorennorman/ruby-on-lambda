@@ -4,7 +4,7 @@ var invokeRubyApp = "./app";
 
 exports.handler = function(event, context) {
   console.log("Starting process: " + invokeRubyApp);
-  var child = spawn(invokeRubyApp);
+  var child = spawn(invokeRubyApp, [JSON.stringify(event, null, 2), JSON.stringify(context, null, 2)]);
 
   child.stdout.on('data', function (data) { console.log("stdout:\n"+data); });
   child.stderr.on('data', function (data) { console.log("stderr:\n"+data); });
