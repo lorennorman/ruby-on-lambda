@@ -116,7 +116,7 @@ pushd packaging/tmp
   BUNDLE_IGNORE_CONFIG=1 bundle install --path ../vendor --without development
 popd
 rm -rf packaging/tmp
-rm -f packaging/vendor/*/*/cache/*
+rm -rf packaging/vendor/*/*/cache/*
 cp -pR packaging/vendor $lib_dir
 cp app/Gemfile* $lib_dir/vendor/
 
