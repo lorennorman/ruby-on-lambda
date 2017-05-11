@@ -31,9 +31,10 @@ By:
 6. Set up an AWS profile in `~/.aws/credentials` for the account created above
 7. Change the variables in `deploy.sh` to match your app and AWS settings
 8. Ensure you're using ruby 2.1.x in this directory
-9. Add any gems you need to app/Gemfile
-10. `cd app` and run `bundle install` from there (you need a Gemfile.lock)
-11. edit `app/app.rb` with your application code
-12. run `./deploy.sh linux-x86_64`
-13. test your Lambda Function!
+9. Ensure you're using Bundler version 1.9.9
+10. Add any gems you need to app/Gemfile
+11. `cd app` and run `bundle install` from there (you need a Gemfile.lock)
+12. edit `app/app.rb` with your application code
+13. run `./deploy.sh linux-x86_64`
+14. test your Lambda Function!
   - i've been using the web console for testing
